@@ -1,3 +1,3 @@
-# mmdF18-json
+Forked fra martinbregnhoi.. 
 
-I dette repo finder i filerne til Bistro Babushka opgaven. Download zip filen, eller fork og clon repo'et
+Opgave - Babushka 
