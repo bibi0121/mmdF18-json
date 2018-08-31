@@ -21,46 +21,100 @@
         </div>
     </div>
 
-    <p>Tekst på siden </p>
+    <h2>Velkommen til </h2>
 
-    <div class="menu">
-        <div class="item item-1">
-            <img src="small/baltiskbondesuppe-sm.jpg" alt="suppe">
-            <h1>Baltisk bondesuppe</h1>
-            <p>Baltisk bondesuppe - En solid starter</p>
-        </div>
-        <div class="item item-2"></div>
-        <div class="item item-3"></div>
-        <div class="item item-4"></div>
-        <div class="item item-5"></div>
-        <div class="item item-6"></div>
-        <div class="item item-7"></div>
-        <div class="item item-8"></div>
-        <div class="item item-9"></div>
-        <div class="item item-10"></div>
-        <div class="item item-11"></div>
-        <div class="item item-12"></div>
-        <div class="item item-13"></div>
-        <div class="item item-14"></div>
-        <div class="item item-15"></div>
-        <div class="item item-16"></div>
-        <div class="item item-17"></div>
-        <div class="item item-18"></div>
-        <div class="item item-19"></div>
-        <div class="item item-20"></div>
-        <div class="item item-21"></div>
-        <div class="item item-22"></div>
-        <div class="item item-23"></div>
-        <div class="item item-24"></div>
-        <div class="item item-25"></div>
-        <div class="item item-26"></div>
-        <div class="item item-27"></div>
-        <div class="item item-28"></div>
-        <div class="item item-29"></div>
+    <section id="container">
+        <template id="menu-template">
+
+            <article>
+                <img src="" alt="">
+                <h3 id="data-navn"></h3>
+                <p id="data-kortbeskrivelse"></p>
+                <p id="data-pris"></p>
+                <p id="data-langbeskrivelse"></p>
+                <p id="data-oprindelsesregion"></p>
+                <p id="data-kategori"> </p>
+                <p id="data-id"></p>
 
 
 
-    </div>
+
+
+
+                <!--
+<div class="item item-1"></div>
+<div class="item item-2"></div>
+<div class="item item-1"></div>
+<div class="item item-2"></div>
+<div class="item item-1"></div>
+<div class="item item-2"></div>
+<div class="item item-1"></div>
+<div class="item item-2"></div>
+<div class="item item-1"></div>
+<div class="item item-2"></div>
+<div class="item item-1"></div>
+<div class="item item-2"></div>
+<div class="item item-1"></div>
+<div class="item item-2"></div>
+<div class="item item-1"></div>
+<div class="item item-2"></div>
+<div class="item item-1"></div>
+<div class="item item-2"></div>
+<div class="item item-1"></div>
+<div class="item item-2"></div>
+<div class="item item-1"></div>
+<div class="item item-2"></div>
+<div class="item item-1"></div>
+<div class="item item-2"></div>
+<div class="item item-1"></div>
+-->
+
+
+
+            </article>
+
+        </template>
+    </section>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", hentJson);
+
+        let menu;
+
+        async function hentJson() {
+
+            let myJson = await fetch("menu.json");
+            menu = await myJson.json();
+
+            console.log(menu);
+
+            visMenu();
+        }
+
+        function visMenu() {
+
+            let modtager = document.querySelector("#container");
+            let temp = document.querySelector("#menu-template");
+
+            menu.forEach(menu => {
+
+                let klon = temp.cloneNode(true).content;
+                klon.querySelector("h3").textContent = menu.navn;
+                klon.querySelector("#data-kortbeskrivelse").textContent = menu.kortbeskrivelse;
+                klon.querySelector("#data-pris").textContent = menu.pris;
+                klon.querySelector("#data-langbeskrivelse").textContent = menu.langbeskrivelse;
+                klon.querySelector("#data-oprindelsesregion").textContent = menu.oprindelsesregion;
+                klon.querySelector("#data-kategori").textContent = menu.kategori;
+                klon.querySelector("#data-id").textContent = menu.id;
+                klon.querySelector("img").src = menu.billede;
+
+                modtager.appendChild(klon);
+
+
+            })
+        }
+
+    </script>
 
 </body>
 
