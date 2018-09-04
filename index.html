@@ -8,114 +8,135 @@
     <title>Babushka Resturant</title>
 </head>
 
+<style>
+    * {
+        font-family: sans-serif;
+    }
+
+    body {
+        background-color: rgb(240, 240, 240);
+    }
+
+    article {
+        padding: 1em;
+        background-color: white;
+    }
+
+    .data-container article img {
+        width: 100%;
+    }
+
+    .data-container {
+        margin: 0 auto;
+        display: grid;
+    }
+
+    h1 {
+        text-transform: capitalize;
+        text-align: center;
+
+    }
+
+    .menu-item {
+        border-radius: 5px;
+        background: #f9ffad;
+    }
+
+    @media screen and (min-width:580px) {
+        .data-container {
+            padding-left: 10%;
+            padding-right: 10%;
+            grid-gap: 5px;
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+
+</style>
+
 <body>
 
     <div class="header">
         <div class="header_text">
             <h1>BISTRO BABUSHKAS</h1>
-            <button>Alle</button>
-            <button>Forretter</button>
-            <button>Hovedretter</button>
-            <button>Dessert</button>
-            <button>Drikkevare</button>
+            <button class="menu-item" data-kategori="alle">Alle</button>
+            <button clas="menu-item" data-kategori="forretter">Forretter</button>
+
+            <button class="menu-item" data-kategori="hovedretter">Hovedretter</button>
+
+            <button class="menu-item" data-kategori="dessert">Desserter</button>
+
+            <button class="menu-item" data-kategori="drikkevare">Drikkevarer</button>
+
+            <button class="menu-item" data-kategori="sideorders">Sideorders</button>
+
         </div>
     </div>
 
-    <h2>Velkommen til </h2>
 
-    <section id="container">
-        <template id="menu-template">
+    <h1> Velkommen til </h1>
 
-            <article>
-                <img src="" alt="">
-                <h3 id="data-navn"></h3>
-                <p id="data-kortbeskrivelse"></p>
-                <p id="data-pris"></p>
-                <p id="data-langbeskrivelse"></p>
-                <p id="data-oprindelsesregion"></p>
-                <p id="data-kategori"> </p>
-                <p id="data-id"></p>
+    <main class="container">
+        <section class="data-container"></section>
+    </main>
+    <template class="data-template">
+        <article class="retter">
 
+            <img src="" alt=""><br>
+            <h2></h2>
+            <span class="data-kortbeskrivelse"></span><br>
+            <span class="data-pris"></span><br>
 
-
-
-
-
-                <!--
-<div class="item item-1"></div>
-<div class="item item-2"></div>
-<div class="item item-1"></div>
-<div class="item item-2"></div>
-<div class="item item-1"></div>
-<div class="item item-2"></div>
-<div class="item item-1"></div>
-<div class="item item-2"></div>
-<div class="item item-1"></div>
-<div class="item item-2"></div>
-<div class="item item-1"></div>
-<div class="item item-2"></div>
-<div class="item item-1"></div>
-<div class="item item-2"></div>
-<div class="item item-1"></div>
-<div class="item item-2"></div>
-<div class="item item-1"></div>
-<div class="item item-2"></div>
-<div class="item item-1"></div>
-<div class="item item-2"></div>
-<div class="item item-1"></div>
-<div class="item item-2"></div>
-<div class="item item-1"></div>
-<div class="item item-2"></div>
-<div class="item item-1"></div>
--->
-
-
-
-            </article>
-
-        </template>
-    </section>
+        </article>
+    </template>
 
     <script>
+        let retter;
+        let dest = document.querySelector(".data-container");
         document.addEventListener("DOMContentLoaded", hentJson);
+        madFilter = "alle";
 
-        let menu;
+        document.querySelectorAll(".menu-item").forEach(knap => {
+            knap.addEventListener("click", filtrering)
+        });
 
-        async function hentJson() {
-
-            let myJson = await fetch("menu.json");
-            menu = await myJson.json();
-
-            console.log(menu);
-
-            visMenu();
+        function filtrering() {
+            dest.textContent = "";
+            madFilter = this.getAttribute("data-kategori");
+            visRetter();
         }
 
-        function visMenu() {
-
-            let modtager = document.querySelector("#container");
-            let temp = document.querySelector("#menu-template");
-
-            menu.forEach(menu => {
-
-                let klon = temp.cloneNode(true).content;
-                klon.querySelector("h3").textContent = menu.navn;
-                klon.querySelector("#data-kortbeskrivelse").textContent = menu.kortbeskrivelse;
-                klon.querySelector("#data-pris").textContent = menu.pris;
-                klon.querySelector("#data-langbeskrivelse").textContent = menu.langbeskrivelse;
-                klon.querySelector("#data-oprindelsesregion").textContent = menu.oprindelsesregion;
-                klon.querySelector("#data-kategori").textContent = menu.kategori;
-                klon.querySelector("#data-id").textContent = menu.id;
-                klon.querySelector("img").src = menu.billede;
-
-                modtager.appendChild(klon);
 
 
+        async function hentJson() {
+            let myJson = await fetch("menu.json");
+            retter = await myJson.json();
+            visRetter();
+        }
+
+        function visRetter() {
+            let temp = document.querySelector(".data-template");
+            document.querySelector("h1").textContent = madFilter;
+            //løb personlisten igennem og lav en klon
+            retter.forEach(retter => {
+                if (retter.kategori == madFilter || madFilter == "alle") {
+
+
+                    let klon = temp.cloneNode(true).content;
+                    //indsæt data i klonen
+
+                    klon.querySelector("img").src = "imgs/small/" + retter.billede + "-sm.jpg";
+                    klon.querySelector("h2").textContent = retter.navn;
+                    klon.querySelector(".data-kortbeskrivelse").textContent = retter.kortbeskrivelse;
+                    klon.querySelector(".data-pris").textContent = "Pris: " + retter.pris + ",-";
+
+
+                    //placer klon i DOM
+                    dest.appendChild(klon);
+                }
             })
         }
 
     </script>
-
 </body>
 
 </html>
